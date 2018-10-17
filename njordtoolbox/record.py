@@ -19,8 +19,7 @@ class Record():
 	:type x: deque.
 	"""
 
-
-	def __init__(self, name="record", maxlen=1000000):
+	def __init__(self, name="Record", maxlen=None):
 		"""Special method for class object construction.
 
 		:param name: the name of the record (optional).
@@ -37,12 +36,20 @@ class Record():
 	def __repr__(self):
 		"""Special method for class object representation.
 		"""
-		return ", ".join([self.name, str(self.__len__())])
+		_repr = {}
+		_repr["name"] = self.name
+		_repr["maxlen"] = self.maxlen
+		_repr["t"] = self.t
+		_repr["x"] = self.x
+		return _repr
 
 	def __str__(self):
 		"""Special method for class object printable version.
 		"""
-		return self.__repr__()
+		_str = []
+		for key, item in self.__repr__().items():
+			_str.append("{} = {}".format(key, item))
+		return "{}({})".format(self.__class__.__name__, ", ".join(_str))
 
 	def __len__(self):
 		"""Special method for class object length.
