@@ -1,20 +1,21 @@
 # njordtoolbox
 
-The njordtoolbox package groups many usefull classes and functions for the njord project.
+The njordtoolbox package groups usefull routines developped under the njord project.
 
 ## Requirements
 
-To use this package you will need the follwing packages to be installed.
+To use the njordtoolbox, the following packages are required,
 
     * numpy
     * pandas
-    * etc.
+    * torch
 
-If you have conda installed on your system, you can verify as:
+If you wish to install the njordtoolbox package using pip, go directly to the next section. The setup.py file will do the requirement work for you. 
+If you don't, make sure the above listed packages are installed. If you are not sure, take the following steps.
+
+If you have conda installed on your system, you can check as:
 
     $ conda list
-
-If needed, you can install the required packages using pip.
 
 Install numpy using pip from the terminal:
 
@@ -24,15 +25,19 @@ Install pandas using pip from the terminal:
 
 	$ pip install pandas
 
+Install torch using pip from the terminal:
+
+    $ pip install torch
+
 ## Installation
 
 Now we can install the package locally (for use on our system), with:
 
-	$ pip install .
+    $ pip install .
 
 We can also install the package with a symlink, so that changes to the source files will be immediately available to other users of the package on our system:
 
-	$ pip install -e .
+    $ pip install -e .
 
 Anywhere else in our system using the same Python, we can do this now:
 
