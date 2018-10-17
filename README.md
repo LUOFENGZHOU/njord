@@ -47,7 +47,12 @@ Anywhere else in our system using the same Python, we can do this now:
 
 ## Record
 
-The record class makes it easy to keep track of timeseries. It behaves like a queue with the regular methods implemented like appendleft, append, popleft, pop, clear, etc. To record a value, keep in mind you must provide the timestamp together with the value. An example would be:
+The record class makes it easy to keep track of timeseries. 
+It behaves like a queue with the regular methods implemented 
+like appendleft, append, popleft, pop, clear, etc. 
+To record a value, keep in mind you must provide the timestamp together with the value. 
+
+An example would be:
 
 ```
 >>> import random
