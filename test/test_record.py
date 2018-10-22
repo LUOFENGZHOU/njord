@@ -31,8 +31,3 @@ if __name__ == "__main__":
 	# Display the record as pandas dataframe.
 	print("Get the record as pandas.")
 	print(record.aspandas())
-
-
-	
-
-

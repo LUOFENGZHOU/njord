@@ -5,7 +5,7 @@ import random
 from .record import Record
 
 
-class History():
+class History:
 	"""Class that handles historical data manipulation.
 
 	:attr df: the historical data.
@@ -55,22 +55,21 @@ class History():
 	def __repr__(self):
 		"""Special method for class object representation.
 		"""
-		msg = {} #{"class": self.__class__.__name__}
-		msg.update({"name": self.name})
-		msg.update({"period": self.period})
-		msg.update({"timestamp": self.timestamp})
-		msg.update({"timestamp_first": self.timestamp_first})
-		msg.update({"timestamp_last": self.timestamp_last})
-		return msg
+		_repr = {}
+		_repr.update({"name": self.name})
+		_repr.update({"period": self.period})
+		_repr.update({"timestamp": self.timestamp})
+		_repr.update({"timestamp_first": self.timestamp_first})
+		_repr.update({"timestamp_last": self.timestamp_last})
+		return _repr
 
 	def __str__(self):
 		"""Special method for class object printable version.
 		"""
-		msg = []
+		_str = []
 		for a, b in self.__repr__().items():
-			msg.append("{} = {}".format(a, b))
-		msg = [", ".join(msg)]
-		return "{}({})".format(self.__class__.__name__, msg)
+			_str.append("{} = {}".format(a, b))
+		return "{}({})".format(self.__class__.__name__, ", ".join(_str))
 
 	def __len__(self):
 		"""Special method for class object length.

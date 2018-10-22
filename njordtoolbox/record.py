@@ -6,7 +6,7 @@ from pandas 		import DataFrame
 from collections 	import deque
 
 
-class Record():
+class Record:
 	"""Class that handles timeseries records.
 
 	:attr name: the name of the record.

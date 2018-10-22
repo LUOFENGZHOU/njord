@@ -69,6 +69,21 @@ An example would be:
 >>> print(myrecord.x)
 ```
 
+## History
+
+The history class makes it easy to manipulate historical data presented in the form of a pandas DataFrame. The index column is a datetime64 object. 
+
+An example would be:
+
+```
+>>> import random
+>>> import time
+>>> import datetime
+>>> from njordtoolbox import History
+>>> history = History
+
+```
+
 ## Trades
 
 The trades record class.
