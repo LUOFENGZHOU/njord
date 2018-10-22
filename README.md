@@ -169,4 +169,4 @@ Now, fill the window with random samples,
 >>>     print(window())
 ```
 
-You should see that the first five samples are displayed as None and the next one with torch tensors. 
+You should see that the first five samples are Nones and the next ones are torch tensors whose elements oscillated around zero. 
