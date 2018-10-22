@@ -22,12 +22,18 @@ if __name__ == "__main__":
 
 	# Fill the window with values.
 	for i in range(10):
+
+		# Create a random data sample.
 		data = {
 			"price_avg_#t": random.normalvariate(100.0, 1.0),
 			"price_low_#t": random.normalvariate(90.0, 1.0),
 			"price_high_#t": random.normalvariate(110, 1.0)
 		}
+
+		# Append the data sample to the window.
 		window.append(data)
+
+		# Display the most recent samples.
 		print(window())
 
 	# End the timer.
