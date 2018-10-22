@@ -13,12 +13,20 @@ if __name__ == "__main__":
 	# Set the record.
 	window = Window(lookback=5)
 
+	# Set normalisation
+	window.add_norm("#t", "pct_change", ref="price_avg_#t")
+	print(window)
+
 	# Start the time.
 	timer_start = time.time()
 
 	# Fill the window with values.
 	for i in range(10):
-		data = {"price_avg_#t": random.normalvariate(100.0, 1.0)}
+		data = {
+			"price_avg_#t": random.normalvariate(100.0, 1.0),
+			"price_low_#t": random.normalvariate(90.0, 1.0),
+			"price_high_#t": random.normalvariate(110, 1.0)
+		}
 		window.append(data)
 		print(window())
 

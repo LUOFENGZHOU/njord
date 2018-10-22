@@ -1,6 +1,7 @@
 # njordtoolbox
 
-The njordtoolbox package groups usefull routines developped under the njord project.
+The njordtoolbox package groups usefull routines developped 
+under the njord project.
 
 ## Requirements
 
@@ -86,7 +87,7 @@ An example would be:
 
 ## Trades
 
-The trades class makes it easy to record trades. A trade has the characterised by a timestamp, price, base quanty, quote quanty, trading fees and an order type. The trades class makes it possible to append trades with the above listed characteristics as a regular lits.
+The class Trades makes it easy to record trades. A trade has the characterised by a timestamp, price, base quanty, quote quanty, trading fees and an order type. The trades class makes it possible to append trades with the above listed characteristics as a regular lits.
 
 As an example. Import first the usefull packages:
 
@@ -122,3 +123,50 @@ print(trades.aspandas())
 ```
 
 That's it.
+
+## Window
+
+The class Window makes it easy to track a data sliding window. 
+A window contains a fixed number of the most recent observed samples.
+We refer that that number as the look-back number. 
+Additionaly, it is also possible to add normalisation methods that a 
+time depended. Namely: percentage change, a pivot change or 
+log change.
+
+As an example. Import first the usefull packages:
+
+```
+>>> import random
+>>> import datetime
+>>> from njordtoolbox import Window
+```
+
+Set a window with a lookback horizon of 5,
+
+```
+>>> window = Window(lookback=5)
+```
+
+Add a normalisation method,
+
+```
+>>> window.add_norm(marker="#t", method="pct_change")
+```
+
+Note here that the pct change method will be applied only on columns
+that contains the given marker. When adding a normalisation method you must
+provide a marker.
+
+Now, fill the window with random samples,
+
+```
+>>> for i in range(10):
+>>>     data = []
+>>>     data["price_avg_#t"] = random.normalvariate(100.0, 1.0)
+>>>     data["price_low_#t"] = random.normalvariate(90.0, 1.0)
+>>>     data["price_high_#t"] = random.normalvariate(110, 1.0)
+>>>     window.append(data)
+>>>     print(window())
+```
+
+You should see that the first five samples are displayed as None and the next one with torch tensors. 

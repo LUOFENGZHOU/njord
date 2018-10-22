@@ -68,11 +68,8 @@ class Window():
 		"""
 		return self.root.__len__()
 
-	def __call__(self, array=True):
+	def __call__(self):
 		"""Special method for class object function-like call.
-
-		:param array: if True returns numpy array, otherwise retuns tensor.
-		:type array: bool.
 		"""
 
 		# Check the length of the current root.
@@ -80,10 +77,15 @@ class Window():
 			return None
 
 		# Check the user specified return data type.
-		if array:
-			data = self.asnumpy()
-		else:
-			data = self.astorch()
+		data = self.astorch()
+
+		# Normalise the data.
+		for norm in self.norm:
+			data = self.normalise(data, norm)
+
+		# Update the data.
+		data = data[-self.lookback:,:]
+		data = data.unsqueeze(0)
 
 		# Returns the data.
 		return data
@@ -107,6 +109,10 @@ class Window():
 		if self.columns is None:
 			self.columns = list(x.keys())
 			self.collen = len(self.columns)
+			for i, norm in enumerate(self.norm):
+				self.norm[i] = self.set_idx_norm(norm)
+		else:
+			pass
 
 		# Append values to root.
 		self.root.append(list(x.values()))
@@ -155,7 +161,7 @@ class Window():
 		"""Returns the root as a torch tensor.
 		"""
 		try:
-			return torch.Tensor(list(self.root)[-self.lookback:])
+			return torch.Tensor(list(self.root)[-self.lookback-1:])
 		except TypeError:
 			print("TypeError in astorch method.")
 			return None
@@ -164,7 +170,7 @@ class Window():
 		"""Returns the root as a numpy array.
 		"""
 		try:
-			return numpy.asarray(list(self.root)[-self.lookback:])
+			return numpy.asarray(list(self.root)[-self.lookback-1:])
 		except TypeError:
 			print("TypeError in astorch method.")
 			return
@@ -195,69 +201,74 @@ class Window():
 	# --- Window normalisation methods --- #
 	# ------------------------------------ #
 
-	def set_norm(self, marker, method, reference=None):
+	def add_norm(self, marker, method, ref=None):
 		"""Add features that have to be normalised
+
+		:param marker: the marker name associated to the column.
+		:type marker: str.
+		:param method: the name of the normalisation method.
+		:type method: str.
+		:param ref: reference for normalisation.
+		:type ref: str.
 		"""
-		norm = {"method":method}
-		idx = []
-		ref = []
-		
-		for i, col in enumerate(self.col):
-			if marker in col:
+
+		# Set the normalisation method as a dictionnary.
+		norm = {
+			"marker": marker, 
+			"method": method,
+			"ref": ref,
+			"idx": None
+		}
+
+		# Set the normalisation index and reference.
+		if self.columns is not None:
+			norm = self.set_index_norm(norm)
+
+		# Append the normalisation method.
+		self.norm.append(norm)
+
+		return
+
+	def set_idx_norm(self, norm):
+		"""Returns the normalisation method with updated index and reference.
+
+		:param norm: the normalisation method.
+		:type norm: dict.
+
+		:return: the updated normalisation method.
+		:rtype: dict.
+		"""
+
+		# Assign the indices.
+		idx = []		
+		for i, column in enumerate(self.columns):
+			if norm["marker"] in column:
 				idx.append(i)
 
-		for i, col in enumerate(self.col):
-			if reference is None:
-				if "#t" in col:
+		# Assign the reference.
+		ref = []
+		for i, column in enumerate(self.columns):
+			if norm["ref"] is None:
+				if norm["marker"] in column:
 					ref.append(i)
 			else:
-				if reference == col:
+				if norm["ref"] == column:
 					ref = [i]
 					break
 
+		# Update and return the norm.
 		norm["idx"] = idx
 		norm["ref"] = ref
-		if not idx:
-			pass
-		else:
-			self.norm.append(norm)
-		return
 
-	def _normalise_normal(self, data, index, mean, std):
-		data[:,index] = ( data[:,index] - mean ) / std
-		return data
-
-	def _normalise_pvt_change(self, data, index, ref):
-		num = data[:,index]
-		den = data[-1,ref]
-		data[:,index] = 100.0 * ( num / ( den + 1.0E-8 ) - 1 )
-		return data
-
-	def _normalise_pct_change(self, data, index, ref):
-		num = data[1:,index]
-		den = data[0:-1,ref]
-		if len(den.size()) == 1:
-			den = den.reshape(-1, 1)
-		data[1:,index] = 100.0 * ( num / ( den + 1.0E-8 ) - 1 )
-		return data
-
-	def _normalise_log_change(self, data, index, ref):
-		num = data[1:,index]
-		den = data[0:-1,ref]
-		if len(den.size()) == 1:
-			den = den.reshape(-1, 1)
-		data[1:,index] = 100.0 * torch.log( num / ( den + 1.0E-8 ) )
-		return data
+		return norm
 
 	def normalise(self, data, norm):
 		"""Normalise the data for the specified normalisation methods.
 
 		:param data: the data to be normalised.
-		:type data: numpy array.
-		:param norm_method: the method name used for normalisation.
-		:type norm_method: <str>.
-		:param reference: the reference feature used for normalisation.
-		:type reference: <str>.
+		:type data: numpy array or torch tensor.
+		:param norm_method: the normalisation method.
+		:type norm_method: dict.
 		
 		:return: the data.
 		:rtype: numpy array.
@@ -269,5 +280,31 @@ class Window():
 		elif norm["method"] == "log_change":
 			data = self._normalise_log_change(data, norm["idx"], norm["ref"])
 		else:
-			pass
+			raise ValueError("Unsupported method {}".format(norm["method"]))
+		return data
+
+	def _normalise_normal(self, data, index, mean, std):
+		data[:,index] = ( data[:,index] - mean ) / ( std + 1.0E-8 )
+		return data
+
+	def _normalise_pvt_change(self, data, index, ref):
+		num = data[:,index]
+		den = data[-1,ref]
+		data[:,index] = 100.0 * ( num / ( den + 1.0E-12) - 1 )
+		return data
+
+	def _normalise_pct_change(self, data, index, ref):
+		num = data[1:,index]
+		den = data[0:-1,ref]
+		if len(den.size()) == 1:
+			den = den.reshape(-1, 1)
+		data[1:,index] = 100.0 * ( num / ( den + 1.0E-12 ) - 1 )
+		return data
+
+	def _normalise_log_change(self, data, index, ref):
+		num = data[1:,index]
+		den = data[0:-1,ref]
+		if len(den.size()) == 1:
+			den = den.reshape(-1, 1)
+		data[1:,index] = 100.0 * torch.log( num / ( den + 1.0E-12 ) )
 		return data
