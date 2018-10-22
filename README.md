@@ -82,7 +82,6 @@ An example would be:
 >>> import datetime
 >>> from njordtoolbox import History
 >>> history = History
-
 ```
 
 ## Trades

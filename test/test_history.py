@@ -6,12 +6,16 @@ import random
 import pandas
 import datetime
 
-from njordtoolbox import Record
+from njordtoolbox import History
 
 
 if __name__ == "__main__":
 
+	# Set an empty dataframe.
+	df = pandas.DataFrame()
+
 	# Set the record.
-	record = Record(name="random")
+	record = History(df, name="random")
+
 
 
