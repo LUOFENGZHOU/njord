@@ -5,7 +5,7 @@ under the njord project.
 
 ## Requirements
 
-To use the njordtoolbox, the following packages are required,
+To use the njordtoolbox, the below listed packages are required:
 
     * numpy
     * pandas

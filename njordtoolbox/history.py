@@ -95,7 +95,7 @@ class History:
 		random_index = random.randrange(len(self.df)-1000)
 		return self.df.index.values[random_index]
 
-	def get_list_values(self):
+	def aslist(self):
 		"""Returns the current data values as a list.
 
 		:return: the data values for the current timestamp.
@@ -106,7 +106,7 @@ class History:
 		except KeyError:
 			return None
 
-	def get_dict_values(self):
+	def asdict(self):
 		"""Returns the current data values as a dict.
 
 		:return: the data values for the current timestamp.
@@ -117,7 +117,7 @@ class History:
 		except KeyError:
 			return None
 
-	def get_array_values(self):
+	def asarray(self):
 		"""Returns the current data values as an array.
 
 		:return: the data values for the current timestamp.

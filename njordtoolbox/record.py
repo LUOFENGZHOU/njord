@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-from numpy			import asarray
+import numpy
+
 from pandas 		import DataFrame
 from collections 	import deque
 
@@ -173,8 +174,8 @@ class Record:
 		:rtype: ndarray.
 		"""
 		(t, x) = self.prune(p)
-		t = asarray(t)
-		x = asarray(x)
+		t = numpy.asarray(t)
+		x = numpy.asarray(x)
 		return (t, x)
 
 	def aspandas(self, p=None):
@@ -189,3 +190,19 @@ class Record:
 		(t, x) = self.prune(p)
 		df = DataFrame(data={"time":t, "x":x})
 		return df.set_index("time")
+
+	def mean(self):
+		"""Returns the mean of the recorded values.
+
+		:return: the average x value.
+		:rtype: float.
+		"""
+		return float(numpy.mean(self.asnumpy()[1]))
+
+	def std(self):
+		"""Returns the standard deviation of the recorded values.
+
+		:return: the average x value.
+		:rtype: float.
+		"""
+		return float(numpy.std(self.asnumpy()[1]))
