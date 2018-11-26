@@ -1,11 +1,10 @@
-# njordtoolbox
+# Njord
 
-The njordtoolbox package groups usefull routines developped 
-under the njord project.
+The njord package groups usefull routines developped under the njord-project.
 
 ## Requirements
 
-To use the njordtoolbox, the below listed packages are required:
+To use the njord package, the below listed packages are required:
 
     * numpy
     * pandas
@@ -43,7 +42,7 @@ We can also install the package with a symlink, so that changes to the source fi
 Anywhere else in our system using the same Python, we can do this now:
 
 ```
->>> import njordtoolbox
+>>> import njord
 ```
 
 ## Record
@@ -59,7 +58,7 @@ An example would be:
 >>> import random
 >>> import time
 >>> import datetime
->>> from njordtoolbox import Record
+>>> from njord import Record
 >>> myrecord = Record(name="normalvariate")
 >>> for i in range(0,10):
 >>>     time.sleep(1.0)
@@ -80,7 +79,7 @@ An example would be:
 >>> import random
 >>> import time
 >>> import datetime
->>> from njordtoolbox import History
+>>> from njord import History
 >>> history = History
 ```
 
@@ -93,7 +92,7 @@ As an example. Import first the usefull packages:
 ```
 >>> import random
 >>> import datetime
->>> from njordtoolbox import Trades
+>>> from njord import Trades
 ```
 
 Then creates an empty trade object.
@@ -137,7 +136,7 @@ As an example. Import first the usefull packages:
 ```
 >>> import random
 >>> import datetime
->>> from njordtoolbox import Window
+>>> from njord import Window
 ```
 
 Set a window with a lookback horizon of 5,
