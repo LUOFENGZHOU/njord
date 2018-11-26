@@ -1,0 +1,11 @@
+# Compiled python modules.
+*.pyc
+
+# Discard apple files.
+*.DS_Store
+
+# Discard log files.
+*.log
+
+# Discard the tensorboard files.
+tensorboard/
