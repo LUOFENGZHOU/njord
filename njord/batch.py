@@ -87,12 +87,13 @@ class Batch:
 		else:
 			raise TypeError()
 
-	def shift(self, df, step, marker=""):
+	def sign(self, df, marker):
+		"""Sign the dataframe columns with a marker.
+		"""
 		columns = df.columns
-		df = df.shift(step)
 		for i in range(0,len(columns)):
 			old = columns[i]
-			new = "{}_{}_{}".format(marker, old, step)
+			new = "{}_{}".format(old, marker)
 			df = df.rename(columns={old:new})
 		return df
 
@@ -105,25 +106,65 @@ class Batch:
 				columns.append(col)
 		return df.loc[:,columns]
 
-	def build(self):
+	def build(self, target=None, method="pvt"):
 		"""Build and return the batch.
 		"""
 
 		# Initialise an empty batch.
 		batch = []
+
+		# Check the target.
+		if target is None:
+			target = list(self.root.columns)
+		elif isinstance(target, str):
+			target = [target]
+		else:
+			pass
 		
 		# Set the features.
 		for lk in self.lk:
-			batch.append(self.shift(self.root, lk, marker="@X"))
+			
+			# Shift the root.
+			df = self.root.shift(lk)
+
+			# Normalise the shifted dataframe.
+			if method == "pvt":
+				df = 100 * ( df / self.root - 1.0 )
+			elif method == "pct":
+				df = 100 * ( df / df.shift(lk+1) - 1.0 )
+			else:
+				pass
+
+			# Sign the new dataframe.
+			df = self.sign(df, "@X_{}".format(lk))
+
+			# Append the dataframe to the batch.
+			batch.append(df)
 
 		# Set the targets.
 		for la in self.la:
-			batch.append(self.shift(self.root, la, marker="@Y"))
 
-		# Build the batch.
+			# Shift the root.
+			df = self.root[target].shift(la)
+
+			# Normalise the shifted dataframe.
+			if method == "pvt":
+				df = 100 * ( df / self.root[target] - 1.0 )
+			elif method == "pct":
+				df = 100 * ( df / df.shift(la+1) - 1.0 )
+			else:
+				pass
+
+			# Sign the new dataframe.
+			df = self.sign(df, "@Y_{}".format(la))
+
+			# Append the dataframe to the batch.
+			batch.append(df)
+
+		# Concatenate all the frames to build the batch.
 		batch = pandas.concat(batch, axis=1, join="outer")
 
-		# Clean the batch.
+		# Clean the batch from nans. 
 		batch = batch.dropna(axis=0, how="any")		
 
 		# Select the features.
