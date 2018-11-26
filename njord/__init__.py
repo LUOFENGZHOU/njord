@@ -5,3 +5,4 @@ from .record 	import Record
 from .trades 	import Trades
 from .wallet	import Wallet
 from .window	import Window
+from .batch		import Batch
