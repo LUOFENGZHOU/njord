@@ -5,7 +5,7 @@
 *.DS_Store
 
 # Discard csv files.
-#*.csv
+*.csv
 
 # Discard log files.
 *.log
