@@ -34,13 +34,14 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+              <a class="nav-link js-scroll-trigger" href="#projects">ML projects</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#projects">ML models</a>
+              <a class="nav-link js-scroll-trigger" href="#opensource">Open Source</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team">Team</a>
+              <a class="nav-link js-scroll-trigger" href="#team">Team</a> 
+            </li>
           </ul>
         </div>
       </div>
@@ -52,27 +53,35 @@
         <div class="mx-auto text-center">
           <h1 class="mx-auto my-0 text-uppercase">Njord Project</h1>
           <h2 class="text-white-50 mx-auto mt-2 mb-5">A cryptocurrency algorithmic trading project powered by machine learning.</h2>
-          <a href="#about" class="btn btn-primary js-scroll-trigger">Learn more</a>
+          <a href="#projects" class="btn btn-primary js-scroll-trigger">Learn more</a>
         </div>
       </div>
     </header>
 
-    <!-- About Section -->
-    <section id="about" class="about-section text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2 class="text-white mb-4">Machine Learning</h2>
-            <p class="text-white-50">We collect, store and manipulate data exctracted from multiple online exchanges to feed different machine learning
-              <a class="js-scroll-trigger" href="#projects">models</a>. The output are used to power our trading strategies.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Projects Section -->
     <section id="projects" class="projects-section bg-light">
       <div class="container">
+
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Data</h2>
+          </div>
+        </div>
+        <br/>
+        <div class="row text-center">
+          <div class="col-lg-12 mx-auto">
+            <p class="text-black-50">We collect OHLC (Open/High/Low/Close) data from Binance. Our resampling periods are 60, 120, 300, 600 and 1800 seconds.</p>
+            <br/>
+            <br/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Projects</h2>
+          </div>
+        </div>
+        <br/>    
 
         <!-- Featured Project Row -->
         <div class="row align-items-center no-gutters mb-4 mb-lg-5">
@@ -146,8 +155,29 @@
       </div>
     </section>
 
-     <!-- Team -->
-    <section class="bg-light" id="team">
+     <!-- Open Source Section -->
+    <section id="opensource" class="opensource-section bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 class="section-heading text-uppercase">Open Source</h2>
+          </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="row text-center">
+          <div class="col-lg-12 mx-auto">
+            <p class="text-black-50">Njord Project is an open-source project available on
+              <a href="https://github.com/njord-project/njord">github</a>. There you will get a simplification of our pipe in order to assess the power of the tools we created. If you want more data, more complex machine learning models, more information, please contact us.</p>
+            <br/>
+            <br/>
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <!-- Team Section -->
+    <section class="team-section bg-light" id="team">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -190,11 +220,6 @@
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-8 mx-auto text-center">
-            <p class="large text-muted">Feel free to contact us for any more detailed information.</p>
           </div>
         </div>
       </div>
