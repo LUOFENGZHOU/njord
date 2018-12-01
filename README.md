@@ -8,7 +8,6 @@ To use the njord package, the below listed packages are required:
 
     * numpy
     * pandas
-    * torch
 
 If you wish to install the njordtoolbox package using pip, go directly to the next section. The setup.py file will do the requirement work for you. 
 If you don't, make sure the above listed packages are installed. If you are not sure, take the following steps.
@@ -25,10 +24,6 @@ Install pandas using pip from the terminal:
 
 	$ pip install pandas
 
-Install torch using pip from the terminal:
-
-    $ pip install torch
-
 ## Installation
 
 Now we can install the package locally (for use on our system), with:
@@ -44,6 +39,10 @@ Anywhere else in our system using the same Python, we can do this now:
 ```
 >>> import njord
 ```
+
+## Notebooks
+
+The directory 'notebook' shows into more details how the njord package can be used.
 
 ## Record
 
