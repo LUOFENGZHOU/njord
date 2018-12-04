@@ -6,7 +6,6 @@ import numpy
 import pandas
 import datetime
 
-# -------------------------------------------- #
 
 class Batch:
 	"""Class that handles timeseries datasets.
@@ -89,6 +88,14 @@ class Batch:
 
 	def sign(self, df, marker):
 		"""Sign the dataframe columns with a marker.
+
+		:param df: the dataframe whose columns must be signed.
+		:type df: pandas DataFrame.
+		:param marker: the signature.
+		:type marker: str.
+
+		:return: the dataframe with signed columns.
+		:rtype: pandas DataFrame.
 		"""
 		columns = df.columns
 		for i in range(0,len(columns)):
@@ -98,7 +105,15 @@ class Batch:
 		return df
 
 	def select(self, df, marker):
-		"""Select a sub dataframe for the specified marker.
+		"""Select a sub dataframe for a specified marker.
+
+		:param df: the dataframe.
+		:type df: pandas DataFrame.
+		:param marker: the marker.
+		:type marker: str.
+
+		:return: dataframe. 
+		:rtype: pandas DataFrame.		
 		"""
 		columns = []
 		for col in df.columns:
@@ -129,9 +144,9 @@ class Batch:
 
 			# Normalise the shifted dataframe.
 			if method == "pvt":
-				df = 100 * ( df / self.root - 1.0 )
+				df = df / self.root - 1.0
 			elif method == "pct":
-				df = 100 * ( df / df.shift(lk+1) - 1.0 )
+				df = df / self.root.shift(lk+1) - 1.0
 			else:
 				pass
 
@@ -149,9 +164,9 @@ class Batch:
 
 			# Normalise the shifted dataframe.
 			if method == "pvt":
-				df = 100 * ( df / self.root[target] - 1.0 )
+				df = df / self.root[target] - 1.0
 			elif method == "pct":
-				df = 100 * ( df / df.shift(la+1) - 1.0 )
+				df = df / self.root.shift(la+1) - 1.0
 			else:
 				pass
 
@@ -178,106 +193,3 @@ class Batch:
 		Y = Y.reshape(m, len(self.la), int(n/len(self.la)))	
 
 		return X, Y
-
-	# ---------------------------------------------- #
-	# --- 1. Prometheus timeseries basic methods --- #
-	# ---------------------------------------------- #
-
-	def set_target(self, target):
-		"""Set the target.
-
-		:param targets: the name of the target(s).
-		:type targets: str, tuple(str), list<str>.
-		"""
-		self.targets = None
-		for item in self.root.columns:
-			if target in item:
-				self.targets = (item,)
-				break
-		if self.targets is None:
-			raise ValueError("Please provide a consistent targets.")
-		return 
-
-	def set_features(self, features=None):
-		"""Set the features.
-
-		:param features: the name of the features (optional).
-		:type features: tuple(str) or lst<str>.
-		"""
-		self.features = tuple(self.root.columns)
-		return
-
-	def _get_timeseries_label_features(self, marker="@X"):
-		features = []
-		for item in self.timeseries.columns:
-			if marker in item:
-				features.append(item)
-		return features
-
-	def _get_timeseries_label_targets(self, marker="@Y"):
-		targets = []
-		for item in self.timeseries.columns:
-			if marker in item:
-				targets.append(item)
-		return targets
-
-	def _get_timeseries_shifted_single_elem(self, df, step, marker=""):
-		columns = df.columns
-		df = df.shift(step)
-		for i in range(0,len(columns)):
-			old = columns[i]
-			new = "{}_{}_{}".format(marker, old, step)
-			df = df.rename(columns={old:new})
-		return df
-
-	# ------------------------------------------------ #
-	# --- 3. Prometheus timeseries dataset methods --- #
-	# ------------------------------------------------ #
-
-	def _get_timeseries_features_as_dataframe(self):
-		features = self._get_timeseries_label_features()
-		return self.timeseries.loc[:,features]
-
-	def _get_timeseries_targets_as_dataframe(self):	
-		targets = self._get_timeseries_label_targets()
-		return self.timeseries.loc[:,targets]
-
-	def _get_timeseries_features_as_array(self):
-		features = self._get_timeseries_features_as_dataframe()
-		features = features.values
-		(m, n) = numpy.shape(features)
-		features = features.reshape(m, len(self.past), int(n/len(self.past)))
-		return features
-
-	def _get_timeseries_targets_as_array(self):
-		targets = self._get_timeseries_targets_as_dataframe()
-		targets = targets.values
-		(m, n) = numpy.shape(targets)
-		if len(self.future) > 1:
-			targets = targets.reshape(m, len(self.future), int(n/len(self.future)))
-		return targets
-
-	def get_dataset(self):
-		"""Return the dataset for the current root.
-
-		:param balanced: balance the dataset accross the categories.
-		:type balanced: bool.
-
-		:return X_train: the features.
-		:rtype X_train: numpy array of shape (m, t_x, n_x).
-		:return Y: the targets.
-		:rtype Y: numpy array of shape (m, n_y).
-		:return t: the timeseries index.
-		:rtype t: numpy array of shape (m, 1).
-		"""
-		
-		# get the features
-		X = self._get_timeseries_features_as_array()
-		
-		# get the targets
-		Y = self._get_timeseries_targets_as_array()
-
-		# remove timeseries
-		self.timeseries = None
-
-		return (X, Y)
