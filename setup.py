@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name="njord",
-	version="0.1",
+	version="0.2",
 	description="njord project: package for machine learning and cryptotrading",
 	url="https://github.com/njord-project/njord",
 	author=["mdhoffschmidt", "evrardts"],
