@@ -6,7 +6,7 @@ import random
 import pandas
 import datetime
 
-from njordtoolbox import Trades
+from njord import Trades
 
 
 if __name__ == "__main__":

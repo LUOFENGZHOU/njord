@@ -6,7 +6,7 @@ import random
 import pandas
 import datetime
 
-from njordtoolbox import History
+from njord import History
 
 
 if __name__ == "__main__":

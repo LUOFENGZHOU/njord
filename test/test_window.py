@@ -5,7 +5,7 @@ import time
 import random
 import datetime
 
-from njordtoolbox import Window
+from njord import Window
 
 
 if __name__ == "__main__":

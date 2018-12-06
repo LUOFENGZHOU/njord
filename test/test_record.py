@@ -5,7 +5,7 @@ import time
 import random
 import datetime
 
-from njordtoolbox import Record
+from njord import Record
 
 
 if __name__ == "__main__":
